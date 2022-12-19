@@ -1,0 +1,47 @@
+-- Truy vấn dữ liệu  dùng Command Prompt
+CREATE database
+--syntax curl -X PUT http://username:password@127.0.0.1:5984/database_name
+--Tạo database có tên demo
+curl -X PUT http://admin:admin@127.0.0.1:5984/demo
+
+VIEW database
+--syntax: curl -X GET http://username:password@127.0.0.1:5984/_all_dbs
+--Xem toàn bộ database
+curl -X GET http://admin:admin@127.0.0.1:5984/_all_dbs
+
+--Xem thông tin của database nhom8
+curl -X GET http://admin:admin@127.0.0.1:5984/nhom8
+
+--VIEW ALL DOCUMENT 
+--Syntax: curl -X GET http://username:password@127.0.0.1:5984/database_name/_all_docs
+--Xem toàn bộ dữ liệu có trong database test
+curl -X GET http://admin:admin@127.0.0.1:5984/test/_all_docs
+
+--DELETE database
+--syntax: curl -X DELETE http://username:password@127.0.0.1:5984/database_name
+curl -X DELETE http://admin:admin@127.0.0.1:5984/test2
+
+-- CREATE document bằng url
+-- Tạo document tương đương với việc insert 1 dòng dữ liệu vào database
+-- Syntax: curl -X PUT http://username:password@127.0.0.1:5984/database name/"id" -d “{ document} “
+-- Như bên dưới là tạo 1 document có key là "name" và value là "Evil Shadow"
+curl -X PUT http://admin:admin@127.0.0.1:5984/test/"001" -d “{ \"Name\": \"Evil Shadow\" } “
+
+UPDATE document bằng url
+--Syntax: curl -X PUT http://username:password@127.0.0.1:5984/database_name/document_id/ -d “{ \"field\" : \"value\", \"_rev\" : \"revision id\" }”
+--Trước khi cập nhật vào xem lại _rev bằng syntax như bên dưới
+curl -X GET http://admin:admin@127.0.0.1:5984/test/"001"
+--Sau khi xem lấy được mã _rev thì ta tiến hành cập nhật
+curl -X PUT http://admin:admin@127.0.0.1:5984/test/001/ -d “{ \"Age\" : \"21\", \"_rev\" : \"10-11716463b4f3e0784d72df48e70025d5\" }”
+
+DELETE document bằng url
+--Xóa document tương đương xóa 1 dòng dữ liệu trong database
+--Syntax: curl -X DELETE http://username:password@127.0.0.1:5984/database name/database_id?_rev_id
+curl -X DELETE http://admin:admin@127.0.0.1:5984/test/008?_rev=1-5f72f59030ccf9ec7c62becebc946879
+
+TRUY VẤN 2 MÁY giống Truy vấn 1 máy chỉ cần sửa user/password máy 1 -> máy 2
+--CREATE database
+--syntax: curl -X PUT http://username_maytram:password_maytram@ipnode:5984/database_name
+curl -X PUT http://nguyenduy:nguyenduy_32@26.109.89.118:5984/test4
+
+--Các thao tác truy vấn còn lại làm tương tự như truy vấn trên 1 máy
